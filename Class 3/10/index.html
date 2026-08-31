@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cloud Form</title>
+</head>
+<body>
+    <h1>☁️ Cloud Student Registration</h1>
+    
+    <form id="cloudForm">
+        <label>Name:</label><br>
+        <input type="text" id="name"><br><br>
+        
+        <!-- Start: Student Works -->
+        
+        <!-- End: Student Works -->
+        
+        
+        <button type="button" onclick="saveToCloud()">
+            ☁️ Save to Cloud
+        </button>
+        <button type="button" onclick="loadFromCloud()">
+            📥 Load All Data
+        </button>
+    </form>
+    
+    <h2>Saved Records:</h2>
+    <div id="records"></div>
+
+    <!-- Firebase SDK (Add these scripts) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    
+    <script>
+        // Your Firebase config (replace with YOUR config from Firebase Console)
+        const firebaseConfig = {
+            apiKey: "YOUR-API-KEY",
+            authDomain: "YOUR-PROJECT.firebaseapp.com",
+            databaseURL: "https://YOUR-PROJECT-default-rtdb.firebaseio.com",
+            projectId: "YOUR-PROJECT",
+            storageBucket: "YOUR-PROJECT.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "YOUR-APP-ID"
+        };
+        
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        let database = firebase.database();
+        
+        // SAVE data to cloud
+        function saveToCloud() {
+            let name = document.getElementById("name").value;
+            let email = document.getElementById("email").value;
+            let course = document.getElementById("course").value;
+            
+            // Validation
+            if (!name || !email) {
+                alert("Please fill in all fields!");
+                return;
+            }
+            
+            // Create a new record with a unique ID
+            let newRecord = database.ref("students").push();
+            newRecord.set({
+                name: name,
+                email: email,
+                course: course,
+                timestamp: new Date().toISOString()
+            }).then(function() {
+                alert("✅ Data saved to cloud!");
+                document.getElementById("name").value = "";
+                document.getElementById("email").value = "";
+                loadFromCloud(); // Refresh the list
+            }).catch(function(error) {
+                alert("❌ Error: " + error.message);
+            });
+        }
+        
+        // LOAD data from cloud
+        function loadFromCloud() {
+            database.ref("students").once("value")
+            .then(function(snapshot) {
+                let html = "<table border='1' cellpadding='8' cellspacing='0'>";
+                html += "<tr><th>Name</th><th>Email</th><th>Course</th><th>Date</th></tr>";
+                
+                snapshot.forEach(function(childSnapshot) {
+                    let data = childSnapshot.val();
+                    html += "<tr>";
+                    html += "<td>" + data.name + "</td>";
+                    html += "<td>" + data.email + "</td>";
+                    html += "<td>" + data.course + "</td>";
+                    html += "<td>" + new Date(data.timestamp).toLocaleDateString() + "</td>";
+                    html += "</tr>";
+                });
+                
+                html += "</table>";
+                document.getElementById("records").innerHTML = html;
+            });
+        }
+        
+        // Load data when page opens
+        loadFromCloud();
+    </script>
+</body>
+</html>

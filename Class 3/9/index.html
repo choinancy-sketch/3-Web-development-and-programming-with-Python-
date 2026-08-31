@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration Portal</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #cbd5e1;
+            --error-color: #dc2626;
+            --success-bg: #f0fdf4;
+            --success-text: #166534;
+            --success-border: #bbf7d0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 2rem 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .registration-wrapper {
+            background-color: var(--card-bg);
+            width: 100%;
+            max-width: 440px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            overflow: border-box;
+            border: 1px solid #e2e8f0;
+        }
+
+        header.portal-header {
+            background-color: #0f172a;
+            color: #ffffff;
+            padding: 2rem 1.5rem;
+            text-align: center;
+        }
+
+        .portal-header h1 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .portal-header p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        main.portal-body {
+            padding: 2rem 1.5rem;
+        }
+
+        .alert-success {
+            background-color: var(--success-bg);
+            border: 1px solid var(--success-border);
+            color: var(--success-text);
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            margin-bottom: 1.25rem;
+            display: none;
+        }
+
+        .alert-success.show {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 0.35rem;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.75rem;
+            box-sizing: border-box;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            background-color: #fff;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        input.error, select.error {
+            border-color: var(--error-color);
+            background-color: #fef2f2;
+        }
+
+        .error-message {
+            color: var(--error-color);
+            font-size: 0.8rem;
+            margin-top: 0.3rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 0.5rem;
+        }
+
+        button[type="submit"]:hover {
+            background-color: var(--primary-hover);
+        }
+    </style>
+</head>
+<body>
+
+    <article class="registration-wrapper">
+        <!-- Semantic Header for introductory branding -->
+        <header class="portal-header">
+            <h1>Student Portal</h1>
+            <p>Complete the details below to register your account</p>
+        </header>
+
+        <!-- Semantic Main content container -->
+        <main class="portal-body">
+            
+            <!-- Success confirmation notice -->
+            <div id="successBox" class="alert-success" role="alert">
+                Registration successful! Welcome to the university portal.
+            </div>
+
+            <!-- Registration Form adhering to semantics -->
+            <form id="studentRegistrationForm" novalidate>
+                
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" name="fullName" placeholder="John Doe">
+                    <div id="fullNameError" class="error-message">Full name is required.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="john@university.edu">
+                    <div id="emailError" class="error-message">Please provide a valid email address.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="department">Department</label>
+                    <select id="department" name="department">
+                        <option value="">Select your program</option>
+                        <option value="cs">Computer Science</option>
+                        <option value="business">Business Administration</option>
+                        <option value="engineering">Mechanical Engineering</option>
+                        <option value="arts">Fine Arts & Design</option>
+                    </select>
+                    <div id="departmentError" class="error-message">Please select a department.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="At least 6 characters">
+                    <div id="passwordError" class="error-message">Password must be at least 6 characters long.</div>
+                </div>
+
+                <button type="submit">Register Student</button>
+            </form>
+        </main>
+    </article>
+
+    <!-- Form Validation Script -->
+    <script>
+        const form = document.getElementById('studentRegistrationForm');
+        const successBox = document.getElementById('successBox');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Stop default browser submission reload
+            let isValid = true;
+
+            // Reference input elements
+            const fullName = document.getElementById('fullName');
+            const email = document.getElementById('email');
+            const department = document.getElementById('department');
+            const password = document.getElementById('password');
+
+            // Reference error notification elements
+            const fullNameError = document.getElementById('fullNameError');
+            const emailError = document.getElementById('emailError');
+            const departmentError = document.getElementById('departmentError');
+            const passwordError = document.getElementById('passwordError');
+
+            // Reset success box visibility
+            successBox.classList.remove('show');
+
+            // 1. Validate Full Name
+            if (fullName.value.trim() === '') {
+                fullName.classList.add('error');
+                fullNameError.classList.add('show');
+                isValid = false;
+            } else {
+                fullName.classList.remove('error');
+                fullNameError.classList.remove('show');
+            }
+
+            // 2. Validate Email using regex pattern matching
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email.value.trim())) {
+                email.classList.add('error');
+                emailError.classList.add('show');
+                isValid = false;
+            } else {
+                email.classList.remove('error');
+                emailError.classList.remove('show');
+            }
+
+            // 3. Validate Department selection -- student works
+           
+
+            // 4. Validate Password length. The password must has at least 6 characters - student works
+             
+
+            // Final Validation Verdict
+            if (isValid) {
+                successBox.classList.add('show');
+                form.reset();
+            }
+        });
+    </script>
+</body>
+</html>

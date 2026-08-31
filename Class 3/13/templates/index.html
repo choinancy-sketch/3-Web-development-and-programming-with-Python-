@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Enquiry App</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            margin: 0;
+            padding: 3rem 1rem;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+        form {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            outline: none;
+        }
+        input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        button {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        button:hover {
+            background-color: #1d4ed8;
+        }
+        .card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+        }
+        .card h2 {
+            margin-top: 0;
+            font-size: 1.3rem;
+            color: #0f172a;
+        }
+        .card p {
+            margin: 0.5rem 0;
+            font-size: 0.95rem;
+        }
+        .error {
+            color: #ef4444;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            padding: 0.75rem;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Stock Enquiry Portal</h1>
+        <form method="POST">
+            <input type="text" name="ticker" placeholder="Try AAPL, TSLA, GOOGL..." required value="{{ ticker or '' }}">
+            <button type="submit">Search</button>
+        </form>
+
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+
+        {% if stock %}
+            <div class="card">
+                <h2>{{ stock.name }} (<span style="color: #2563eb;">{{ ticker }}</span>)</h2>
+                <p><strong>Price:</strong> ${{ stock.price }}</p>
+                <p><strong>Change:</strong> <span style="color: {{ '#16a34a' if '+' in stock.change else '#dc2626' }};">{{ stock.change }}</span></p>
+                <p><strong>Market Cap:</strong> {{ stock.market_cap }}</p>
+                <p><strong>P/E Ratio:</strong> {{ stock.pe_ratio }}</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
